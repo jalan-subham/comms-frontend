@@ -7,28 +7,49 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect } from 'react';
 import MyButton from '@/components/MyButton';
 import { useRef } from 'react';
-
+import { router } from 'expo-router';
 export default function RecordScreen() {
     const {name, uid} =  useLocalSearchParams<{name: string; uid: string}>();
     const [facing, setFacing] = useState<CameraType>('front');
     const [permission, requestPermission] = useCameraPermissions();
     const [recording, setRecording] = useState('off');
     const [timeLeft, setTimeLeft] = useState(3);
+    const [record, setRecord] = useState(null);
+    const [camera, setCamera] = useState(null);
 
+    const stopVideoRecording = async () => {
+      camera.stopRecording();
+      setRecording('off');
+      console.log("Recording ended");
+
+
+    }
 
     useEffect(() => {
-      if (permission?.granted) {
-        // Camera permissions are granted.
-        return;
+      if (record) {
+      router.push(`/recorded?name=${encodeURIComponent(name)}&uid=${encodeURIComponent(uid)}&record=${encodeURIComponent(record)}`);
+      console.log(record);
       }
-      requestPermission();
-    }
-    , [permission]);
+    },
+    [record]
+    );
+
     
+    useEffect(() => { // start recording
+      (async () => {
+        if (recording === 'start') {
+          console.log("Recording started");
+          const localRecord = await camera.recordAsync();
+          setRecord(localRecord.uri);
+          console.log(record);
+          
+        }
+      })();
+    } , [recording]);
 
     const timerRef = useRef(null);
 
-  useEffect(() => {
+  useEffect(() => { // start recording
     if (recording === 'wait') {
       timerRef.current = setTimeout(() => {
         if (timeLeft <= 1) {
@@ -39,16 +60,14 @@ export default function RecordScreen() {
         }
       }, 1000);
     }
-
     return () => clearTimeout(timerRef.current);
   }, [timeLeft, recording]);
 
-  const startRecording = () => {
+  const startRecordingTimer = () => {
     setTimeLeft(3);
     setRecording('wait');
   };
-
-
+ 
     
     if (!permission) {
       // Camera permissions are still loading.
@@ -66,11 +85,8 @@ export default function RecordScreen() {
     function toggleCameraFacing() {
       setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
-    function endRecording() {
-      setRecording('off');
-      console.log("Recording ended");
-    }
 
+    if (permission.granted) {
     return (
       <View className="flex-1 justify-center items-center bg-black">
   <Text className="text-white text-2xl mb-4">
@@ -87,19 +103,21 @@ export default function RecordScreen() {
         flex: 1
       }}
       facing={facing}
+      ref = {ref => setCamera(ref)}
+      mode = 'video'
     />
     {/* </View> */}
   </View>
-  {recording == 'wait' && (  
+  { recording == 'wait' && (  
   <View className="w-4/5 h-4/5  absolute justify-center items-center">
-        <Text className="text-white">{timeLeft}</Text>
+        <Text className="text-white text-8xl">{timeLeft}</Text>
   </View>)}
 
   <View className="flex-row align-center">
       {recording === 'start' ? (
-        <MyButton className="bg-red-600 px-3 mt-4 mx-3" title="Stop" onPress={endRecording}/>
+        <MyButton className="bg-red-600 px-3 mt-4 mx-3" title="Stop" onPress={stopVideoRecording}/>
       ) : (
-        <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Start" onPress={startRecording}/>
+        <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Start" onPress={startRecordingTimer}/>
 
       )
       
@@ -111,3 +129,4 @@ export default function RecordScreen() {
 </View>
     );
   }
+}
