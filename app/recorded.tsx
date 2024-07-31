@@ -32,7 +32,7 @@ function getCurrentDateTime() {
   return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
 }
 
-async function uriToArrayBuffer(uri) {
+async function uriToArrayBuffer(uri: string | undefined) {
   try {
     // Read the file as a base64 string
     const base64String = await FileSystem.readAsStringAsync(uri, {
@@ -67,7 +67,14 @@ AWS.config.update({
   region: REGION,
 });
 
-  async function writeToDynamoDB(data) {
+  async function writeToDynamoDB(data: {
+      id: string; // remove the file extension
+      user_uid: string | undefined; // user's UID (plaksha)
+      user_name: string | undefined; // user's name as given
+      timestamp: string; // timestamp of the entry
+      video_uri: string; // URI of the video file
+      processed: {};
+    }) {
     const params = {
       TableName: DB_TABLE_NAME,
       Item: data
