@@ -71,9 +71,13 @@ export default function RecordScreen() {
     
     if (!permission) {
       // Camera permissions are still loading.
-      return <View />;
+      return (
+        <View className="flex-1 justify-center">
+          <Text className="text-white text-lg">Loading...</Text>
+        </View>
+      );
     }
-    if (!permission.granted) {
+    else if (!permission.granted) {
       // Camera permissions are not granted yet.
       return (
         <View className="flex-1 justify-center">
