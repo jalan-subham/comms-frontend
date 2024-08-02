@@ -9,9 +9,13 @@ export default function HomeScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} automaticallyAdjustKeyboardInsets={true} className="bg-black">
+            {/* <Text className="text-white text-3xl2 top-24 left-24">Input your details to continue.</Text> */}
+
       <View className="flex-1 items-center justify-center">
+
         <View className="w-1/3">
-          <View>
+
+          <View className="">
             <Text className="text-lg text-gray-500 dark:text-gray-300 mb-2">Name</Text>
             <TextInput
               onChangeText={onChangeName}
