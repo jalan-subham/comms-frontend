@@ -16,6 +16,7 @@ export default function RecordScreen() {
     const [timeLeft, setTimeLeft] = useState(3);
     const [record, setRecord] = useState(null);
     const [camera, setCamera] = useState(null);
+    
 
     const stopVideoRecording = async () => {
       camera.stopRecording();

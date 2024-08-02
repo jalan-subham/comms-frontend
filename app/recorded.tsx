@@ -12,11 +12,19 @@ import * as FileSystem from 'expo-file-system';
 
 
 export default function VideoScreen() {
-  const {name, uid, record} =  useLocalSearchParams<{name: string; uid: string, record: string}>();
+  let {name, uid, record} =  useLocalSearchParams<{name: string; uid: string, record: string}>();
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [uploading, setUploading] = useState(false);  
+
+  // lowercase
+  if (name) {
+    name = name.toLowerCase();
+  }
+  if (uid) {
+    uid = uid.toLowerCase();
+  }
   
 function getCurrentDateTime() {
   const now = new Date();
@@ -113,7 +121,6 @@ AWS.config.update({
       const upload = await s3.putObject(params).promise();
       console.log(upload);
       setUploading(false);
-      alert("File uploaded successfully.");
       writeToDynamoDB({
         id: uid + "_" + fileName.slice(0, -4), // remove the file extension
         user_uid: uid, // user's UID (plaksha)
@@ -122,8 +129,14 @@ AWS.config.update({
         video_uri: `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${uid}/${fileName}`, // URI of the video file
         processed: {}
       });
+      alert("File uploaded successfully.");
+      setModalVisible(false);
+      router.replace("/report/" + uid + "_" + fileName.slice(0, -4));
+      
     } catch (e) {
       console.log(e);
+      alert("Error uploading file. Please try again.");
+      setModalVisible(false);
     }
       
 
