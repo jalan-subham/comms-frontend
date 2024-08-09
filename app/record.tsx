@@ -8,6 +8,9 @@ import { useState, useEffect } from 'react';
 import MyButton from '@/components/MyButton';
 import { useRef } from 'react';
 import { router } from 'expo-router';
+import * as DocumentPicker from 'expo-document-picker';
+
+
 export default function RecordScreen() {
     const {name, uid} =  useLocalSearchParams<{name: string; uid: string}>();
     const [facing, setFacing] = useState<CameraType>('front');
@@ -16,8 +19,20 @@ export default function RecordScreen() {
     const [timeLeft, setTimeLeft] = useState(3);
     const [record, setRecord] = useState(null);
     const [camera, setCamera] = useState(null);
+    const pickDocument = async () => {
+      let result = await DocumentPicker.getDocumentAsync({ type: ['video/mp4', 'video/quicktime', 'video/x-m4v', 'video/x-mov'] , copyToCacheDirectory: true }).then(response => {
+          if (response.canceled == false) {    
+            // console.log(response.assets);      
+            let { uri } = response.assets[0];
+            console.log(uri);
+            router.push(`/recorded?name=${encodeURIComponent(name)}&uid=${encodeURIComponent(uid)}&record=${encodeURIComponent(uri)}`);
+          } 
+        });
+  }
     
-
+    useEffect(() => {
+      requestPermission();
+    }, []); 
     const stopVideoRecording = async () => {
       camera.stopRecording();
       setRecording('off');
@@ -128,6 +143,7 @@ export default function RecordScreen() {
       
       }
       <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Flip Camera" onPress={toggleCameraFacing}/>
+      <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Upload Video" onPress={pickDocument}/>
 
   </View>
   
