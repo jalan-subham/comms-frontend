@@ -110,7 +110,7 @@ export default function RecordScreen() {
     return (
       <View className="flex-1 justify-center items-center bg-black">
   <Text className="text-white text-2xl mb-4">
-    Record your self-introduction. Press Start to begin.
+    What is your name and where are you from?
   </Text>
   <View className="w-4/5 h-4/5 border-2 border-white">
   {/* <View className="absolute h-300 items-center justify-center bg-blue">
@@ -143,7 +143,7 @@ export default function RecordScreen() {
       
       }
       <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Flip Camera" onPress={toggleCameraFacing}/>
-      <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Upload Video" onPress={pickDocument}/>
+      {/* <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Upload Video" onPress={pickDocument}/> */}
 
   </View>
   
