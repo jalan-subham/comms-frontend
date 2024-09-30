@@ -12,19 +12,15 @@ import * as FileSystem from 'expo-file-system';
 
 
 export default function VideoScreen() {
-  let {name, uid, record} =  useLocalSearchParams<{name: string; uid: string, record: string}>();
+  // let {name, uid, record} =  useLocalSearchParams<{name: string; uid: string, record: string}>();
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [uploading, setUploading] = useState(false);  
-
-  // lowercase
-  if (name) {
-    name = name.toLowerCase();
-  }
-  if (uid) {
-    uid = uid.toLowerCase();
-  }
+  const questionPointer = global.questionPointer;
+  const record = global.videoURLs[questionPointer];
+  const isLast = global.questions.length - 1 === questionPointer;
+  const userData = global.userData;
   
 function getCurrentDateTime() {
   const now = new Date();
@@ -40,6 +36,15 @@ function getCurrentDateTime() {
   return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
 }
 
+function confirmVideo() {
+  if (isLast) {
+    startUploading();
+  } else {
+    global.questionPointer++;
+    global.videoURLs[questionPointer] = record;
+    router.push(`/record`);
+  }
+}
 async function uriToArrayBuffer(uri: string | undefined) {
   try {
     // Read the file as a base64 string
@@ -65,9 +70,9 @@ async function uriToArrayBuffer(uri: string | undefined) {
     throw error;
   }
 }
-const S3_BUCKET = "comms-test-v1"; // Replace with your bucket name
+const S3_BUCKET = "comms-prod-v1"; // Replace with your bucket name
 const REGION = "ap-south-1"; // Replace with your region
-const DB_TABLE_NAME = "comms-test-v1"; // Replace with your DynamoDB table name
+const DB_TABLE_NAME = "comms-prod-1"; // Replace with your DynamoDB table name
 
 AWS.config.update({
   accessKeyId: process.env.EXPO_PUBLIC_AWS_ACCESS,
@@ -75,14 +80,7 @@ AWS.config.update({
   region: REGION,
 });
 
-  async function writeToDynamoDB(data: {
-      id: string; // remove the file extension
-      user_uid: string | undefined; // user's UID (plaksha)
-      user_name: string | undefined; // user's name as given
-      timestamp: string; // timestamp of the entry
-      video_uri: string; // URI of the video file
-      processed: {};
-    }) {
+  async function writeToDynamoDB(data) {
     const params = {
       TableName: DB_TABLE_NAME,
       Item: data
@@ -101,8 +99,9 @@ AWS.config.update({
   const uploadFile = async () => {
     setUploading(true);
 
-    const fileName = getCurrentDateTime() + ".mov";
+    // const fileName = getCurrentDateTime() + ".mov";
     const file = await uriToArrayBuffer(record);
+    const timestamp = parseInt((new Date().getTime() / 1000).toFixed(0));
 
     const s3 = new S3({
       params: {
@@ -111,31 +110,38 @@ AWS.config.update({
       region: REGION,
       });
 
-    const params = {
-      Bucket: S3_BUCKET,
-      Key: uid + "/" + fileName,
-      Body: file,
-    };
 
     try {
+      global.videoURLs.map(async (videoURL, index) => {
+        var params = {
+          Bucket: S3_BUCKET,
+          Key: timestamp + "/" + index + ".mov",
+          Body: file,
+        };
       const upload = await s3.putObject(params).promise();
       console.log(upload);
+      });
       setUploading(false);
       writeToDynamoDB({
-        id: uid + "_" + fileName.slice(0, -4), // remove the file extension
-        user_uid: uid, // user's UID (plaksha)
-        user_name: name, // user's name as given
-        timestamp: fileName.slice(0, -4), // timestamp of the entry
-        video_uri: `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${uid}/${fileName}`, // URI of the video file
+        id: timestamp, // remove the file extension
+        email: userData.email, // user's email
+        age: userData.age, // user's
+        gender: userData.gender,
+        languageHome: userData.languageHome,
+        languagePrimary: userData.languagePrimary,
+        region: userData.region,
+        emailed: false,
+        video_folder: `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${timestamp}/`, // URI of the video folder
         processed: {}
       });
-      alert("File uploaded successfully.");
+      alert("Files uploaded successfully.");
       setModalVisible(false);
-      router.replace("/report/" + uid + "_" + fileName.slice(0, -4));
+      router.replace("/index");
+      // router.replace("/report/" + timestamp + "_" + fileName.slice(0, -4));
       
     } catch (e) {
       console.log(e);
-      alert("Error uploading file. Please try again.");
+      alert("Error uploading files. Please try again.");
       setModalVisible(false);
     }
       
@@ -185,7 +191,7 @@ AWS.config.update({
         className="bg-blue-600 px-3 mt-4 mx-3"
       /> */}
       <MyButton title="Re-Record" className="bg-blue-600 px-3 mt-4 mx-3" onPress={() => router.back()}></MyButton>
-      <MyButton title="Confirm" className="bg-green px-3 mt-4 mx-3" onPress={startUploading}></MyButton>
+      <MyButton title="Confirm" className="bg-green px-3 mt-4 mx-3" onPress={confirmVideo}></MyButton>
     </View>
       
 

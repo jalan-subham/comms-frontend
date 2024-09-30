@@ -19,6 +19,11 @@ export default function RecordScreen() {
     const [timeLeft, setTimeLeft] = useState(3);
     const [record, setRecord] = useState(null);
     const [camera, setCamera] = useState(null);
+
+    const questions = global.questions;
+    const questionPointer = global.questionPointer;
+    const currQuestion = questions[questionPointer];
+    const totalQuestions = questions.length;
     const pickDocument = async () => {
       let result = await DocumentPicker.getDocumentAsync({ type: ['video/mp4', 'video/quicktime', 'video/x-m4v', 'video/x-mov'] , copyToCacheDirectory: true }).then(response => {
           if (response.canceled == false) {    
@@ -43,7 +48,8 @@ export default function RecordScreen() {
 
     useEffect(() => {
       if (record) {
-      // router.push(`/recorded?name=${encodeURIComponent(name)}&uid=${encodeURIComponent(uid)}&record=${encodeURIComponent(record)}`);
+        global.videoURLs[questionPointer] = record;
+      router.push(`/recorded`);
       console.log(record);
       }
     },
@@ -110,7 +116,7 @@ export default function RecordScreen() {
     return (
       <View className="flex-1 justify-center items-center bg-black">
   <Text className="text-white text-2xl mb-4">
-    What is your name and where are you from?
+    Prompt {questionPointer}/{totalQuestions}:{currQuestion}
   </Text>
   <View className="w-4/5 h-4/5 border-2 border-white">
   {/* <View className="absolute h-300 items-center justify-center bg-blue">

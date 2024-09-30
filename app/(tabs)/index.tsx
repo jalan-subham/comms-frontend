@@ -7,14 +7,14 @@ import { StyleSheet } from 'react-native';
 import {router} from 'expo-router';
 
 export default function HomeScreen() {
-  const [name, onChangeName] = React.useState('');
-  const [uid, onChangeUid] = React.useState('');
+  // const [name, onChangeName] = React.useState('');
+  // const [uid, onChangeUid] = React.useState('');
   const [age, onChangeAge] = React.useState('');
   const [gender, onChangeGender] = React.useState('');
   const [languageHome, onChangeLanguageHome] = React.useState('');
   const [languagePrimary, onChangeLanguagePrimary] = React.useState('');
   const [region, onChangeRegion] = React.useState('');
-
+  const [email, onChangeEmail] = React.useState('');
   var metadata = require('../../metadata.json');
   console.log(metadata);
   // context picking logic
@@ -50,7 +50,19 @@ const indianStatesAndUTs = [
 ];
 
 const formHandler = () => {
+  // check email format
+  var emailFormat = /\S+@\S+\.\S+/;
+  if (!emailFormat.test(email)) {
+    alert("Please enter a valid email.");
+    return;
+  }
+  if (email == '') {
+    alert("Please enter your email.");
+    return;
+  }
+
   var userData = {
+    email: email,
     age: age,
     gender: gender,
     languageHome: languageHome,
@@ -81,7 +93,7 @@ const formHandler = () => {
               className="text-lg w-full rounded-lg border border-gray-200 bg-white p-4 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
             />
           </View> */}
-
+       
           <View className="mt-3">
             <Text className="text-lg text-gray-500 dark:text-gray-300 mb-2">Age</Text>
             <TextInput
@@ -155,7 +167,7 @@ const formHandler = () => {
           }}
            style = {pickerSelectStyles}
            darkTheme={true}
-      onValueChange={(value) => onChangeGender(value)}
+      onValueChange={(value) => onChangeRegion(value)}
       items={indianStatesAndUTs.map((state, index) => ({
         label: state,
         value: state.toLowerCase().replace(/\s+/g, ''), // Remove spaces and convert to lowercase
@@ -165,7 +177,15 @@ const formHandler = () => {
     </View>
           
   
-
+    <View className="mt-3">
+            <Text className="text-lg text-gray-500 dark:text-gray-300 mb-2">Email (report will be sent here)</Text>
+            <TextInput
+              onChangeText={onChangeEmail}
+              value={email}
+              placeholder="davidoff.sharma@gmail.com"
+              className="text-lg w-full rounded-lg border border-gray-200 bg-white p-4 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
+            />
+          </View>
           <View className="mt-8">
             {/* <Link href={`/record`} asChild> */}
               <TouchableOpacity className="bg-blue-600 rounded-lg self-start" activeOpacity={0.8} onPress={formHandler}>
