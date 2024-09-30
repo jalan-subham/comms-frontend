@@ -21,6 +21,14 @@ export default function VideoScreen() {
   const record = global.videoURLs[questionPointer];
   const isLast = global.questions.length - 1 === questionPointer;
   const userData = global.userData;
+
+  const uploadCompleteAlert = () =>
+    Alert.alert('Upload Complete', 'The videos have been uploaded. The report will be sent to your email once processing is complete. ', [
+      {text: 'OK', onPress: () => {
+        setModalVisible(false);
+        router.replace("/");
+      }},
+    ]);
   
 function getCurrentDateTime() {
   const now = new Date();
@@ -70,7 +78,7 @@ async function uriToArrayBuffer(uri: string | undefined) {
     throw error;
   }
 }
-const S3_BUCKET = "comms-prod-v1"; // Replace with your bucket name
+const S3_BUCKET = "comms-prod-1"; // Replace with your bucket name
 const REGION = "ap-south-1"; // Replace with your region
 const DB_TABLE_NAME = "comms-prod-1"; // Replace with your DynamoDB table name
 
@@ -100,7 +108,6 @@ AWS.config.update({
     setUploading(true);
 
     // const fileName = getCurrentDateTime() + ".mov";
-    const file = await uriToArrayBuffer(record);
     const timestamp = parseInt((new Date().getTime() / 1000).toFixed(0));
 
     const s3 = new S3({
@@ -112,15 +119,19 @@ AWS.config.update({
 
 
     try {
-      global.videoURLs.map(async (videoURL, index) => {
+      // console.log(global.videoURLs);
+      for (let i = 0; i < global.videoURLs.length; i++) {
+        var file = await uriToArrayBuffer(global.videoURLs[i]);
         var params = {
           Bucket: S3_BUCKET,
-          Key: timestamp + "/" + index + ".mov",
+          Key: timestamp + "/" + i + ".mov",
           Body: file,
         };
+
       const upload = await s3.putObject(params).promise();
       console.log(upload);
-      });
+      }
+
       setUploading(false);
       writeToDynamoDB({
         id: timestamp, // remove the file extension
@@ -130,13 +141,13 @@ AWS.config.update({
         languageHome: userData.languageHome,
         languagePrimary: userData.languagePrimary,
         region: userData.region,
+        context: global.context,
         emailed: false,
         video_folder: `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${timestamp}/`, // URI of the video folder
         processed: {}
       });
-      alert("Files uploaded successfully.");
-      setModalVisible(false);
-      router.replace("/index");
+      uploadCompleteAlert();
+     
       // router.replace("/report/" + timestamp + "_" + fileName.slice(0, -4));
       
     } catch (e) {

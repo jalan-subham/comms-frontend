@@ -23,9 +23,10 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
+      <Tabs.Screen
         name="history"
         options={{
+          href: null,
           title: 'History',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
@@ -35,12 +36,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="test"
         options={{
+          href: null,
           title: 'Test',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
-      /> */}
+      />
 
       <Tabs.Screen
         name="about"

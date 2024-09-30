@@ -16,7 +16,7 @@ export default function HomeScreen() {
   const [region, onChangeRegion] = React.useState('');
   const [email, onChangeEmail] = React.useState('');
   var metadata = require('../../metadata.json');
-  console.log(metadata);
+  // console.log(metadata);
   // context picking logic
   var questions = metadata[0].questions;
   var questionPointer = 0;
@@ -24,6 +24,7 @@ export default function HomeScreen() {
   global.questions = questions;
   global.questionPointer = questionPointer;
   global.videoURLs = [];
+  global.context = metadata[0].context;
 
 
   
@@ -69,7 +70,7 @@ const formHandler = () => {
     languagePrimary: languagePrimary,
     region: region
   };  
-  console.log(userData);
+  // console.log(userData);
   global.userData = userData;
 
   // navigate to /record

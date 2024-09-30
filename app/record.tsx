@@ -116,7 +116,7 @@ export default function RecordScreen() {
     return (
       <View className="flex-1 justify-center items-center bg-black">
   <Text className="text-white text-2xl mb-4">
-    Prompt {questionPointer}/{totalQuestions}:{currQuestion}
+    Prompt {questionPointer+1}/{totalQuestions}: {currQuestion}
   </Text>
   <View className="w-4/5 h-4/5 border-2 border-white">
   {/* <View className="absolute h-300 items-center justify-center bg-blue">
