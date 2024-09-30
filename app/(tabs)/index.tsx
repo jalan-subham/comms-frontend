@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import "../../global.css";
 import RNPickerSelect from 'react-native-picker-select';
 import { StyleSheet } from 'react-native';
+import {router} from 'expo-router';
 
 export default function HomeScreen() {
   const [name, onChangeName] = React.useState('');
@@ -13,6 +14,17 @@ export default function HomeScreen() {
   const [languageHome, onChangeLanguageHome] = React.useState('');
   const [languagePrimary, onChangeLanguagePrimary] = React.useState('');
   const [region, onChangeRegion] = React.useState('');
+
+  var metadata = require('../../metadata.json');
+  console.log(metadata);
+  // context picking logic
+  var questions = metadata[0].questions;
+  var questionPointer = 0;
+
+  global.questions = questions;
+  global.questionPointer = questionPointer;
+  global.videoURLs = [];
+
 
   
   const handleNumericInput = (text) => {
@@ -36,6 +48,21 @@ const indianStatesAndUTs = [
   'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 
   'Lakshadweep', 'Delhi', 'Puducherry', 'Jammu and Kashmir', 'Ladakh'
 ];
+
+const formHandler = () => {
+  var userData = {
+    age: age,
+    gender: gender,
+    languageHome: languageHome,
+    languagePrimary: languagePrimary,
+    region: region
+  };  
+  console.log(userData);
+  global.userData = userData;
+
+  // navigate to /record
+  router.push("/record");
+}
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} automaticallyAdjustKeyboardInsets={true} className="bg-black">
@@ -140,11 +167,11 @@ const indianStatesAndUTs = [
   
 
           <View className="mt-8">
-            <Link href={`/record?age=${encodeURIComponent(age)}&gender=${encodeURIComponent(gender)}&languageHome=${encodeURIComponent(languageHome)}&languagePrimary=${encodeURIComponent(languagePrimary)}&region=${encodeURIComponent(region)}`} asChild>
-              <TouchableOpacity className="bg-blue-600 rounded-lg self-start" activeOpacity={0.8}>
+            {/* <Link href={`/record`} asChild> */}
+              <TouchableOpacity className="bg-blue-600 rounded-lg self-start" activeOpacity={0.8} onPress={formHandler}>
                 <Text className="text-white text-lg capitalize px-6 py-2">Continue</Text>
               </TouchableOpacity>
-            </Link>
+            {/* </Link> */}
           </View>
         </View>
       </View>

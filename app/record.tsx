@@ -12,7 +12,7 @@ import * as DocumentPicker from 'expo-document-picker';
 
 
 export default function RecordScreen() {
-    const {name, uid} =  useLocalSearchParams<{name: string; uid: string}>();
+    // const {name, uid} =  useLocalSearchParams<{name: string; uid: string}>();
     const [facing, setFacing] = useState<CameraType>('front');
     const [permission, requestPermission] = useCameraPermissions();
     const [recording, setRecording] = useState('off');
@@ -43,7 +43,7 @@ export default function RecordScreen() {
 
     useEffect(() => {
       if (record) {
-      router.push(`/recorded?name=${encodeURIComponent(name)}&uid=${encodeURIComponent(uid)}&record=${encodeURIComponent(record)}`);
+      // router.push(`/recorded?name=${encodeURIComponent(name)}&uid=${encodeURIComponent(uid)}&record=${encodeURIComponent(record)}`);
       console.log(record);
       }
     },
