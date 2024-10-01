@@ -101,7 +101,7 @@ const formHandler = () => {
               onChangeText={handleNumericInput}
               value={age}
               keyboardType='numeric'
-              placeholder="20"
+              placeholder="e.g. 20"
               maxLength={2}
               className="text-lg w-full rounded-lg border border-gray-200 bg-white p-4 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
             />
@@ -142,7 +142,7 @@ const formHandler = () => {
             <TextInput
               onChangeText={onChangeLanguageHome}
               value={languageHome}
-              placeholder="Hindi"
+              placeholder="e.g. Hindi"
               className="text-lg w-full rounded-lg border border-gray-200 bg-white p-4 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
             />
           </View>
@@ -152,7 +152,7 @@ const formHandler = () => {
             <TextInput
               onChangeText={onChangeLanguagePrimary}
               value={languagePrimary}
-              placeholder="English"
+              placeholder="e.g. English"
               className="text-lg w-full rounded-lg border border-gray-200 bg-white p-4 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
             />
           </View>
@@ -183,7 +183,7 @@ const formHandler = () => {
             <TextInput
               onChangeText={onChangeEmail}
               value={email}
-              placeholder="davidoff.sharma@gmail.com"
+              placeholder="e.g. davidoff.sharma@gmail.com"
               className="text-lg w-full rounded-lg border border-gray-200 bg-white p-4 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
             />
           </View>

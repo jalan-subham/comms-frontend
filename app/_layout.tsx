@@ -27,7 +27,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={DarkTheme}>
       <Stack>
       <Stack.Screen name="report" options = {{ headerShown: true, title: '', headerTransparent: true }}/>
       <Stack.Screen name="recorded" options = {{ headerShown: true, title: '', headerTransparent: true, headerBackVisible: false  }}/>

@@ -143,7 +143,7 @@ AWS.config.update({
         region: userData.region,
         context: global.context,
         emailed: false,
-        video_folder: `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${timestamp}/`, // URI of the video folder
+        // video_folder: `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${timestamp}/`, // URI of the video folder
         processed: {}
       });
       uploadCompleteAlert();
