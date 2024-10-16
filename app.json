@@ -24,7 +24,8 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.jalansubham7.intro_eval"
     },
     "web": {
       "bundler": "metro",
