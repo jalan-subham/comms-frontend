@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect } from 'react';
 import { ScrollView, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import "../../global.css";
@@ -78,6 +79,7 @@ const formHandler = () => {
 }
 
   return (
+    
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} automaticallyAdjustKeyboardInsets={true} className="bg-black">
             {/* <Text className="text-white text-3xl2 top-24 left-24">Input your details to continue.</Text> */}
 
