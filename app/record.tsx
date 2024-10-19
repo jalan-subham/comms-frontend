@@ -148,7 +148,7 @@ export default function RecordScreen() {
       )
       
       }
-      <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Flip Camera" onPress={toggleCameraFacing}/>
+      {/* <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Flip Camera" onPress={toggleCameraFacing}/> */}
       {/* <MyButton className="bg-blue-600 px-3 mt-4 mx-3" title="Upload Video" onPress={pickDocument}/> */}
 
   </View>
