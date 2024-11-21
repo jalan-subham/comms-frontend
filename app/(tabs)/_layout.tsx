@@ -14,35 +14,27 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}>
+             
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Welcome',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="history"
+        name="form"
         options={{
-          href: null,
-          title: 'History',
+          title: 'Get Started',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="test"
-        options={{
-          href: null,
-          title: 'Test',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
+
+     
 
       <Tabs.Screen
         name="about"

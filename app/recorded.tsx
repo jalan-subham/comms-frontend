@@ -26,7 +26,7 @@ export default function VideoScreen() {
     Alert.alert('Upload Complete', 'The videos have been uploaded. The report will be sent to your email once processing is complete. ', [
       {text: 'OK', onPress: () => {
         setModalVisible(false);
-        router.replace("/");
+        router.replace("/thankyou");
       }},
     ]);
   
