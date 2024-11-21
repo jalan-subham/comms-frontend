@@ -4,7 +4,7 @@
     "slug": "intro_eval",
     "version": "1.0.0",
     "orientation": "landscape",
-    "icon": "./assets/images/splash.png",
+    "icon": "./assets/images/icon2.png",
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "splash": {
@@ -24,7 +24,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon2.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
