@@ -29,10 +29,13 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <Stack>
+      <Stack.Screen name="instructions" options = {{ headerShown: true, title: '', headerTransparent: true , headerBackVisible: true }}/>
+
+      <Stack.Screen name="thankyou" options = {{ headerShown: true, title: '', headerTransparent: true , headerBackVisible: false }}/>
       <Stack.Screen name="report" options = {{ headerShown: true, title: '', headerTransparent: true }}/>
       <Stack.Screen name="recorded" options = {{ headerShown: true, title: '', headerTransparent: true, headerBackVisible: false  }}/>
         <Stack.Screen name="record" options = {{ headerShown: true, title: '', headerTransparent: true, headerBackVisible: false  }}/>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false , title: 'Home'}} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false , title: ''}} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
